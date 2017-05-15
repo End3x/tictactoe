@@ -142,7 +142,7 @@ void controller::showScoresFromHighscore(){
 }
 
 void controller::updateScoreInHighscore(){
-    scoreboard.updateScore("abebe", 10);
+    scoreboard.updateScore(boardObj.getWinner()->getName(), 10);
 
 
 }

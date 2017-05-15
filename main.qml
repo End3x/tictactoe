@@ -285,7 +285,7 @@ ApplicationWindow {
 
                 onClicked: {
 
-                    crtObj.updateScoreInHighscore("Even", 10);
+                    crtObj.updateScoreInHighscore();
                     crtObj.showScoresFromHighscore();
 
 

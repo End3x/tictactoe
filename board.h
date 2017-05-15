@@ -8,7 +8,7 @@
 class board{
     int** boardArray;
 
-    Player *winner = nullptr;
+    Player *winner;
 
     enum winner_direction{
         horizontal,
