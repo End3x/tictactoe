@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Higscorelist.qml</file>
+    </qresource>
+    <qresource prefix="/resources">
+        <file>ttt_sircle.gif</file>
+        <file>ttt_cross.gif</file>
+    </qresource>
+</RCC>
