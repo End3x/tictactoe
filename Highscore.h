@@ -9,10 +9,15 @@
 #include <string>
 #include <cstdlib>
 
+
+
+
+
 class Highscore
 {
 
-    std::string filename = "Scoreboard.txt";     //Name of file to keep the scores
+
+public:
 
     struct Entry{                           //struct to keep scores
         std::string name;                        //string to hold player's name
@@ -22,8 +27,25 @@ class Highscore
 
     std::vector<Entry> entries;
 
-public:
+
+
     Highscore();
+
+    void updateScore(std::string name, int point);
+
+    std::vector<Highscore::Entry> getScores();
+
+    //void getScores();
+
+    void showScores();
+
+    friend class controller;
+
+
+
+private:
+
+    std::string filename = "Scoreboard.txt";     //Name of file to keep the scores
 
     void addInFiles(int index, Entry e);
 
@@ -34,8 +56,6 @@ public:
     void printScores();
 
     void replaceContent();
-
-    void updateScore(std::string name, int point);
 
     void addEntry(std::string name, int score);
 
@@ -49,9 +69,16 @@ public:
 
     void cleanScores(std::string name);
 
-    std::vector<Entry> getScores();
+    std::vector<std::string> updateBoard(std::vector<std::string> board1);
 
-    void getScore();
+
+
+
+
+
+
+
+
 };
 
 #endif // HIGHSCORE_H

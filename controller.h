@@ -13,7 +13,7 @@ class controller : public QObject
     board boardObj;
     Player *player_X;
     Player *player_O;
-    Highscore *scoreboard;
+    Highscore scoreboard;
 
     enum game_type{
         pvp,
@@ -56,6 +56,13 @@ public slots:
     QString getWinnerName();
 
     bool checkIfDraw();
+
+    //std::vector<Highscore::Entry> controller::getScores();
+
+    void showScoresFromHighscore();
+
+    void updateScoreInHighscore();
+
 
 
 

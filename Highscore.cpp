@@ -186,11 +186,12 @@ void Highscore::cleanScores(std::string name){  //function to set all inactive p
 
 
 std::vector<Highscore::Entry> Highscore::getScores(){
+    cleanVector();
     return entries;
 }
 
 
-void Highscore::getScore(){
+/*void Highscore::getScore(){
     //stringstream ss;
     int v_len = entries.size();
     if(v_len > 5) v_len = 5;
@@ -198,8 +199,68 @@ void Highscore::getScore(){
         std::cout << " " << entries[i].name << "\t\t| " << entries[i].score << std::endl;
     }
     //return ss.str();
+}*/
+
+
+void Highscore::showScores(){
+    std::vector<std::string> board;
+
+
+    std::string headline = "------------High Score------------";
+    std::string categories = "|Nr:| Name:     | Score:         |";
+    std::string line = "----------------------------------";
+    std::string f1 = "| 1 |           |                |";
+    std::string f2 = "| 2 |           |                |";
+    std::string f3 = "| 3 |           |                |";
+    std::string f4 = "| 4 |           |                |";
+    std::string f5 = "| 5 |           |                |";
+
+
+    board.push_back(f1);
+    board.push_back(f2);
+    board.push_back(f3);
+    board.push_back(f4);
+    board.push_back(f5);
+
+    board= updateBoard(board);
+    std::stringstream ss;
+
+
+
+    std::cout << headline << std::endl << categories << std::endl << line << std::endl;
+    for(int i=0;i<5;i++){
+        std::cout << board[i] << std::endl;
+    }
+
+    //std::cout << ss.str();
 }
 
+
+
+std::vector<std::string> Highscore::updateBoard(std::vector<std::string> board1){
+    std::vector<std::string> board = board1;
+    int nnnn = entries.size();
+
+    if (nnnn < 1 ){return board;}
+
+    if (entries.size() > 5){nnnn = 5;}
+
+    for(int i=0;i<nnnn;i++){
+        std::string tmp_name = entries[i].name;
+        int nam_l = tmp_name.length();
+        std::stringstream tmp_score;
+        tmp_score << entries[i].score;
+
+
+
+        board[i].replace(6, nam_l, tmp_name);
+        board[i].replace(18, tmp_score.str().length(), tmp_score.str());
+        tmp_score.str("");
+    }
+
+    return board;
+
+}
 
 
 

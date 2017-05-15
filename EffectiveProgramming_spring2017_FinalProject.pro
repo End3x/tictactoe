@@ -11,7 +11,7 @@ SOURCES += main.cpp \
     Highscore.cpp \
     player.cpp \
     Player_computer.cpp \
-    ../../../../../Downloads/Scoreboard-3/Scoreboard2.cpp
+
 
 RESOURCES += qml.qrc
 

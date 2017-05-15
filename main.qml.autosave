@@ -279,6 +279,24 @@ ApplicationWindow {
                 }
             }
         }
+
+        Column {
+            Button{
+
+                onClicked: {
+
+                    crtObj.updateScoreInHighscore();
+                    crtObj.showScoresFromHighscore();
+
+
+                }
+            }
+
+
+
+
+
+        }
     }//end of root_win_highscore
 
 

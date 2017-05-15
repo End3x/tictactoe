@@ -136,9 +136,23 @@ bool controller::checkIfDraw(){
 }
 
 
-std::vector<Highscore::Entry> Highscore::getScore(){
+
+void controller::showScoresFromHighscore(){
+    scoreboard.showScores();
+}
+
+void controller::updateScoreInHighscore(){
+    scoreboard.updateScore("abebe", 10);
+
 
 }
+
+
+
+
+/*std::vector<Highscore::Entry> Highscore::getScores(){
+
+}*/
 
 
 

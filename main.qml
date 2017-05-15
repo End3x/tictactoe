@@ -279,6 +279,24 @@ ApplicationWindow {
                 }
             }
         }
+
+        Column {
+            Button{
+
+                onClicked: {
+
+                    crtObj.updateScoreInHighscore("Even", 10);
+                    crtObj.showScoresFromHighscore();
+
+
+                }
+            }
+
+
+
+
+
+        }
     }//end of root_win_highscore
 
 
@@ -429,7 +447,7 @@ ApplicationWindow {
                                     if(crtObj.checkIfWon() || crtObj.checkIfDraw()){
                                         timer_endGame.running = true;
                                         if (crtObj.checkIfWon()){
-                                            gameEnded_label.text = (crtObj.getWinnerName() + "is the winner");
+                                            gameEnded_label.text = (crtObj.getWinnerName() + " is the winner");
                                         }else{
                                             gameEnded_label.text = "Its a draw";
                                         }
