@@ -6,6 +6,7 @@
 #include  "player_person.h"
 #include "board.h"
 #include <ctime>
+#include <Highscore.h>
 
 
 
@@ -97,7 +98,7 @@ QString controller::getName_playerO(){
 void controller::setComputerMove(){
     // TODO: her skal vi legge inn en delay funksjon som gjør at computer ikke legger neste trekk så kjapt.
     if(!checkIfWon()){
-    delay(3);
+    
     boardObj.playComputer();
     }
 }

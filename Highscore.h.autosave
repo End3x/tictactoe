@@ -9,9 +9,10 @@
 #include <string>
 #include <cstdlib>
 
+
 class Highscore
 {
-
+    
     std::string filename = "Scoreboard.txt";     //Name of file to keep the scores
 
     struct Entry{                           //struct to keep scores
