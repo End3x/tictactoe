@@ -63,7 +63,9 @@ public slots:
 
     void updateScoreInHighscore();
 
+    QString getHighscoreEntriesNames(int i );
 
+    int getHighscoreEntriesScore(int i );
 
 
 

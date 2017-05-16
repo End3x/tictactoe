@@ -40,7 +40,7 @@ void Highscore::addInFiles(int index, Entry e){ //Function adds a player to the 
     outfile.close();
 }
 
-bool Highscore::fileExist(){       //function to check if file exists
+bool Highscore::fileExist(){     //function to check if file exists
     std::ifstream f(filename);   //opens file to read only
     bool g = f.good();
     f.close();
@@ -223,7 +223,7 @@ void Highscore::showScores(){
     board.push_back(f5);
 
     board= updateBoard(board);
-    std::stringstream ss;
+    //std::stringstream ss;
 
 
 

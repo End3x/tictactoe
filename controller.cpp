@@ -24,7 +24,7 @@ void controller::delay(int time){
     int counter = 1;
     while(clock() < start_time+time *1000){
         if (clock() == start_time + counter*1000)
-        std::cout << "(" << counter << ")" << std::endl;
+            std::cout << "(" << counter << ")" << std::endl;
         counter++;
     }
 }
@@ -38,7 +38,7 @@ void controller::clearBoard(){
     for ( int i = 0 ; i < 3 ; i++){
         for ( int j = 0 ; j < 3 ; j++){
 
-           boardObj.getBoardArray()[i][j] = 0;
+            boardObj.getBoardArray()[i][j] = 0;
         }
     }
     boardObj.displayBoard();
@@ -99,7 +99,7 @@ void controller::setComputerMove(){
     // TODO: her skal vi legge inn en delay funksjon som gjør at computer ikke legger neste trekk så kjapt.
     if(!checkIfWon()){
 
-    boardObj.playComputer();
+        boardObj.playComputer();
     }
 }
 
@@ -121,6 +121,7 @@ int controller::getWinnerSet(){
 }
 
 QString controller::getWinnerName(){
+    controller::updateScoreInHighscore();
     return QString::fromStdString(boardObj.getWinner()->getName());
 }
 
@@ -132,6 +133,8 @@ bool controller::checkIfDraw(){
             }
         }
     }
+
+    scoreboard.updateScore(boardObj.getWinner()->getName(), 0);
     return true;
 }
 
@@ -143,12 +146,27 @@ void controller::showScoresFromHighscore(){
 
 void controller::updateScoreInHighscore(){
     scoreboard.updateScore(boardObj.getWinner()->getName(), 10);
-
-
 }
 
 
+QString controller::getHighscoreEntriesNames(int i ){
+    if(scoreboard.entries.size() > i){
+        return QString::fromStdString(scoreboard.entries[i].name);
+    }else{
+        return "<emplty>";
+    }
 
+}
+
+int controller::getHighscoreEntriesScore(int i ){
+    if(scoreboard.entries.size() > i){
+        return scoreboard.entries[i].score;
+    }else{
+
+        return 0;
+    }
+
+}
 
 /*std::vector<Highscore::Entry> Highscore::getScores(){
 

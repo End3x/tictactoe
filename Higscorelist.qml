@@ -1,6 +1,7 @@
 import QtQuick 2.4
 
 ListModel{
+    id: higscorelist
     ListElement{
         name: "Abebe";
         points: "24";

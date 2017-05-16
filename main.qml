@@ -4,6 +4,9 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtGraphicalEffects 1.0
 import QtQml 2.2
+import QtQuick.Window 2.2
+
+
 
 
 ApplicationWindow {
@@ -11,10 +14,24 @@ ApplicationWindow {
     visible: true
     width: 640
     height: 480
-    title: qsTr("Hello World")
+    title: qsTr("Tic tac toe")
 
     Component {
-        id: menuButtons
+        id: menuButtons_large
+
+        ButtonStyle{
+            background: Rectangle{
+                implicitWidth: 200
+                implicitHeight: 25
+                border.width: control.focus ? 2 : 1
+                border.color: "green"
+                radius: 4
+            }
+        }
+    }// end of menuButton_large
+
+    Component {
+        id: menuButtons_small
 
         ButtonStyle{
             background: Rectangle{
@@ -23,29 +40,9 @@ ApplicationWindow {
                 border.width: control.focus ? 2 : 1
                 border.color: "green"
                 radius: 4
-
             }
         }
-    }
-
-    /*Component{
-        id: active_button
-
-        ButtonStyle{
-            background: Rectangle{
-                implicitWidth: 100
-                implicitHeight: 25
-                border.width: control.focus ? 2 : 1
-                border.color: "red"
-                radius: 4
-                color: LinearGradient{
-                    anchors.fill: parent
-                    start: Qt.point(0,0)
-                    end:Qt.point(parent.width,parent.height)
-                }
-            }
-        }
-    }*/
+    }// end of menuButton_small
 
     Rectangle{
         id: root_win_welcome
@@ -53,38 +50,30 @@ ApplicationWindow {
         height: root.height
         visible: true
 
-
         Column{
+            spacing: 10
             anchors.centerIn: root_win_welcome
 
             Label{
                 id: welcome_label_title
-                text: "Tic Tic Tac Toe"
+                font.pointSize: 32
+                text: "Tic Tac Toe"
             }
-
 
             Button {
                 id: welcome_button_startGame
                 text: "Start Game "
+                style: menuButtons_small
 
-                style: menuButtons
-
-
-
-               onClicked: {
+                onClicked: {
                     root_win_chooseMode.visible= true
-
                 }
             }
 
             Button{
                 id: welcome_button_highscore
                 text: "Highscore"
-
-                style: menuButtons
-
-
-
+                style: menuButtons_small
 
                 onClicked: {
                     root_win_highscore.visible = true
@@ -92,8 +81,18 @@ ApplicationWindow {
                 }
             }
         }
-
     }//end of win_welcome
+
+    Item{
+        Timer{
+            id: invalid_timer
+            interval: 1500
+            running: false
+            repeat: false
+            onTriggered: invalid_move_display.visible = false
+
+        }
+    }
 
     Rectangle{
         id: root_win_chooseMode
@@ -102,41 +101,34 @@ ApplicationWindow {
         visible: false
 
         Column{
-            anchors.centerIn: root_win_chooseMode
-
+            spacing: 10
+            padding: 30
+            anchors.centerIn: parent
 
             Label{
-                text: "her velger man spille modus"
+                font.pointSize: 32
+                text: "Choose Mode"
+                anchors.horizontalCenter: parent.horizontalCenter
             }
 
             Button{
                 id: chooseMode_button_pvp
                 text: "Player vs Player"
-
-                style: menuButtons
+                style: menuButtons_large
 
                 onClicked: {
-                    console.log("player v player selected")
-
                     root_win_chooseMode.visible = false
                     root_win_setPlayerName.pvp = true
                     root_win_setPlayerName.visible = true
-
-
-
-                    //controller.testMethode();
                 }
             }
 
             Button{
                 id: chooseMode_button_pvc
                 text: "Player vs Computer"
-
-                style: menuButtons
+                style: menuButtons_large
 
                 onClicked: {
-                    console.log("player v computer selected")
-
                     root_win_chooseMode.visible = false
                     root_win_setPlayerName.pvp = false
                     root_win_setPlayerName.visible = true
@@ -147,19 +139,13 @@ ApplicationWindow {
             Button{
                 id: chooseMode_button_back
                 text: "Back"
-
-                style: menuButtons
+                style: menuButtons_small
 
                 onClicked: {
-
-
                     root_win_chooseMode.visible = false
-
                 }
             }
-
         }
-
     }//end of win_chooseMode
 
     Rectangle{
@@ -168,36 +154,29 @@ ApplicationWindow {
         height: root.height
         visible: false
 
-
         property bool pvp: false
         property string input: ""
 
-        Row{
-
+        Column{
             anchors.centerIn: parent
             property bool playerX: true
-
-
-            Label {
-                text: "name: "
-            }
+            spacing: 10
 
             TextField{
-
                 id: setPlayerName_textField_namePlayer
-
+                width: 200
+                placeholderText: "Name : Player X"
             }
 
             Button{
                 text: "OK"
+                style: menuButtons_small
 
                 onClicked: {
-
-
                     if(parent.playerX){
-
                         crtObj.setPlayer(setPlayerName_textField_namePlayer.text,parent.playerX);
                         if(root_win_setPlayerName.pvp){
+                            setPlayerName_textField_namePlayer.placeholderText = "Name : Player O"
                             setPlayerName_textField_namePlayer.text="";
                             parent.playerX = false;
                             setPlayerName_textField_namePlayer.forceActiveFocus()
@@ -205,97 +184,113 @@ ApplicationWindow {
                             crtObj.setComputer();
                             root_win_setPlayerName.visible= false;
                             root_win_game.visible= true;
-                            playerName_display.text= crtObj.getName_playerX();
+                            playerName_display.text= (crtObj.getName_playerX()+"s");
                             setPlayerName_textField_namePlayer.text="";
                             canvas.x_playersTurn = true
-
                         }
 
                     }else{
-
-                        console.log("hei")
                         crtObj.setPlayer(setPlayerName_textField_namePlayer.text,parent.playerX);
                         root_win_setPlayerName.visible= false;
                         setPlayerName_textField_namePlayer.text="";
                         root_win_game.visible= true;
                         playerName_display.text= crtObj.getName_playerX()+"s";
                         canvas.x_playersTurn = true
-
-
                     }
 
                     canvas.initiate = false;
+                    highscore_button_continue.visible = true
+
                 }
-
-
             }
+
             Button{
 
                 text:"Back"
+                style: menuButtons_small
 
                 onClicked: {
                     root_win_chooseMode.visible = true;
                     root_win_setPlayerName.visible= false;
-
                 }
-
             }
-
         }
-
-
     }//end of root_win_setPlayerName
 
     Rectangle{
         id: root_win_highscore
         height: root.height
         width: root.width
-        color: "green";
         visible: false
 
+        onVisibleChanged: {
+            if (visible == true){
+                higscorelist.clear();
 
+                for (var i = 0 ; i < 5 ; i++){
 
-        Column{
-
-
-            ListView{
-                width: root.width*0.5
-                height: root.height*0.5
-
-
-                model: Higscorelist{}
-
-                delegate: Text{
-                    text: name + " : " + points
-                }
-            }
-
-            Button{
-                text : "close"
-
-
-                onClicked: {
-                    root_win_highscore.visible = false
+                    if (crtObj.getHighscoreEntriesNames(i) !== "" && crtObj.getHighscoreEntriesScore(i) !== -1){
+                        higscorelist.append({
+                                                name: crtObj.getHighscoreEntriesNames(i),
+                                                score: crtObj.getHighscoreEntriesScore(i)
+                                            })
+                    }
                 }
             }
         }
 
-        Column {
-            Button{
+        Rectangle{
+            width: root.width*0.5
+            height: root.height*0.5
+            anchors.centerIn: parent
 
-                onClicked: {
+            Column{
+                anchors.verticalCenter: parent.verticalCenter
 
-                    crtObj.updateScoreInHighscore();
-                    crtObj.showScoresFromHighscore();
+                ListView{
+                    width: root.width*0.5
+                    height: root.height*0.3
+                    model: higscorelist
 
+                    delegate: Text{
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: name + "    " + score
+                        font.pointSize: 18
+
+                    }
+                }
+
+                ListModel{
+                    id: higscorelist
 
                 }
+
+                Button{
+                    id: highscore_button_btm
+                    text : "Back to menu"
+                    style: menuButtons_small
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    onClicked: {
+                        root_win_highscore.visible = false
+                        highscore_button_continue.visible = false
+                    }
+                }
+
+                Button{
+                    id : highscore_button_continue
+                    text: "Continue game"
+                    visible: false
+                    style: menuButtons_small
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    onClicked: {
+                        root_win_highscore.visible = false
+
+                        root_win_game.visible = true
+                    }
+                }
             }
-
-
-
-
-
         }
     }//end of root_win_highscore
 
@@ -317,60 +312,59 @@ ApplicationWindow {
 
             }
 
-
             Column{
                 id: menu_column
                 width: root.width*0.6
                 height: root.height
 
-
-
                 Row{
                     height: parent.height*0.15
+                    spacing: 10
+                    padding: 30
 
                     Button{
-                        text: "Menu"
+                        text: "Quit game"
+                        style: menuButtons_small
 
                         onClicked: {
                             root_win_game.visible = false
-
+                            canvas.initiate = true;
+                            canvas.requestPaint();
+                            canvas.x_playersTurn = true;
+                            highscore_button_continue.visible = false
+                            highscore_button_close.visible = true
                         }
                     }
 
                     Button{
-                        text: "reset"
-                        onClicked: {
-                            /*for (var i = 0 ; i < canvas.board_one.length; i++){
-                                for (var j = 0; j < canvas.board_one[0].length;j++){
-                                    canvas.board_one[i][j]=0;
-                                }
-                            }*/
+                        text: "Restart game"
+                        style: menuButtons_small
 
+                        onClicked: {
                             crtObj.clearBoard();
                             canvas.initiate = true;
                             canvas.requestPaint();
                             canvas.x_playersTurn = true;
                         }
                     }
-                }//end of menu row
+
+                    Button{
+                        id: root_button_highscore
+                        text: "Highscore"
+                        style: menuButtons_small
+
+                        onClicked: {
+                            root_win_highscore.visible = true
+                            root_win_game.visible = false
+                        }
+                    }
+                }
 
 
                 Row{
                     id: centerColumn
                     width: parent.width
                     height: parent.height
-
-                    Item{
-
-                        Timer{
-                            id : timer_endGame
-                            interval: 1500;
-                            running: false;
-                            repeat: false;
-                            onTriggered: win_gameEnded.visibility = "Windowed";
-
-                        }
-                    }
 
                     Window{
                         id : win_gameEnded
@@ -383,12 +377,16 @@ ApplicationWindow {
 
                             Label{
                                 id: gameEnded_label
+                                anchors.centerIn: parent
                             }
 
                             Row{
+                                spacing: 10
+                                padding: 30
 
                                 Button{
                                     text: "Play again"
+                                    style: menuButtons_small
 
                                     onClicked: {
                                         crtObj.clearBoard();
@@ -400,16 +398,27 @@ ApplicationWindow {
                                 }
 
                                 Button{
-                                    text: "end game"
+                                    text: "Back to Menu"
+                                    style: menuButtons_small
+
+                                    onClicked: {
+                                        win_gameEnded.visibility= "Hidden"
+                                        root_win_game.visible = false
+                                        canvas.initiate = true;
+                                        canvas.requestPaint();
+                                        canvas.x_playersTurn = true;
+                                        highscore_button_continue.visible = false
+
+                                    }
                                 }
                             }
                         }
-
                     }
 
-
                     Canvas{
-
+                        id:canvas
+                        width: parent.width
+                        height: parent.width
 
                         property int board_x
                         property int board_y
@@ -417,40 +426,24 @@ ApplicationWindow {
                         property bool x_playersTurn: true
                         property string cross: "resources/ttt_cross.gif"
                         property string sircles: "resources/ttt_sircle.gif"
+
                         Component.onCompleted: loadImage(cross),loadImage(sircles)
-
-                        id:canvas
-
-                        width: parent.width
-                        height: parent.width
 
                         MouseArea{
                             id:mouse_area
                             anchors.fill: parent
 
                             onPressed: {
-
                                 canvas.initiate= false
-
-
 
                                 if(crtObj.setMove(mouseX/(canvas.width/3), mouseY/(canvas.height/3), canvas.x_playersTurn)){
                                     canvas.requestPaint();
+
                                     if (playerName_display.text === (crtObj.getName_playerX()+"s")){
                                         playerName_display.text = crtObj.getName_playerO()+"s";
 
                                     }else{
                                         playerName_display.text = crtObj.getName_playerX()+"s";
-
-                                    }
-
-                                    if(crtObj.checkIfWon() || crtObj.checkIfDraw()){
-                                        timer_endGame.running = true;
-                                        if (crtObj.checkIfWon()){
-                                            gameEnded_label.text = (crtObj.getWinnerName() + " is the winner");
-                                        }else{
-                                            gameEnded_label.text = "Its a draw";
-                                        }
 
                                     }
 
@@ -467,10 +460,19 @@ ApplicationWindow {
                                         }
                                     }
 
+                                    if(crtObj.checkIfWon() || crtObj.checkIfDraw()){
+                                        win_gameEnded.visibility = "Windowed"
+                                        if (crtObj.checkIfWon()){
+                                            gameEnded_label.text = (crtObj.getWinnerName() + " is the winner");
+                                        }else{
+                                            gameEnded_label.text = "Its a draw";
+                                        }
+                                    }
+
+
                                 }else{
-
-                                    //run error invalid move.
-
+                                    invalid_move_display.visible = true
+                                    invalid_timer.start()
                                 }
                             }
                         }
@@ -597,34 +599,42 @@ ApplicationWindow {
                 width: parent.width*0.20
                 height: parent.height
 
-
-
-
                 Rectangle{
                     width: parent.width
-
-                    color: "red"
-
-                    anchors.centerIn: parent
+                    height: parent.height
+                    // anchors.verticalCenter: parent.verticalCenter
 
                     Column{
+                        width: parent.width
+                        height: parent.height*0.15
                         padding: 10
+                        anchors.verticalCenter: parent.verticalCenter
 
-                        Label{
-                            width: root_win_game*0.2
-                            height: 30
-                            color: "green"
-                            //horizontalAlignment: AlignHCenter
-                            text: "Its"
-                        }
+
+
 
                         Label{
                             id : playerName_display
+                            font.bold: true
+                            font.pointSize: 24
+                            anchors.horizontalCenter: parent.horizontalCenter
 
                         }
 
                         Label{
                             text: "turn"
+                            font.pointSize: 18
+                            anchors.horizontalCenter: parent.horizontalCenter
+                        }
+
+
+                        Label{
+                            id: invalid_move_display
+                            text: "INVALID MOVE"
+                            color: "red"
+                            visible: false
+                            font.pointSize: 18
+                            anchors.horizontalCenter: parent.horizontalCenter
                         }
                     }
                 }
